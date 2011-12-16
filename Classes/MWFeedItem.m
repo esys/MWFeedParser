@@ -33,7 +33,7 @@
 
 @implementation MWFeedItem
 
-@synthesize identifier, title, link, date, updated, summary, content, enclosures;
+@synthesize identifier, title, link, date, updated, summary, content, category, enclosures;
 
 #pragma mark NSObject
 
@@ -54,6 +54,7 @@
 	[updated release];
 	[summary release];
 	[content release];
+    [category release];
 	[enclosures release];
 	[super dealloc];
 }

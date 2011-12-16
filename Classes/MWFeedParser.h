@@ -77,6 +77,7 @@ typedef enum { FeedTypeUnknown, FeedTypeRSS, FeedTypeRSS1, FeedTypeAtom } FeedTy
 	NSMutableData *asyncData;
 	NSString *asyncTextEncodingName;
 	ConnectionType connectionType;
+    NSTimeInterval timeout;
 	
 	// Parsing
 	ParseType feedParseType;
@@ -116,6 +117,9 @@ typedef enum { FeedTypeUnknown, FeedTypeRSS, FeedTypeRSS1, FeedTypeAtom } FeedTy
 
 // Set whether to download asynchronously or synchronously
 @property (nonatomic) ConnectionType connectionType;
+
+// Timeout for connection
+@property (nonatomic) NSTimeInterval timeout;
 
 // Whether parsing was stopped
 @property (nonatomic, readonly, getter=isStopped) BOOL stopped;

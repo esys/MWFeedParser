@@ -50,7 +50,7 @@
 
 // Properties
 @synthesize url, delegate;
-@synthesize urlConnection, asyncData, asyncTextEncodingName, connectionType;
+@synthesize urlConnection, asyncData, asyncTextEncodingName, connectionType, timeout;
 @synthesize feedParseType, feedParser, currentPath, currentText, currentElementAttributes, item, info;
 @synthesize pathOfElementWithXHTMLType;
 @synthesize stopped, failed, parsing;
@@ -157,7 +157,7 @@
 	// Request
 	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url
 												  cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData 
-											  timeoutInterval:60];
+											  timeoutInterval:timeout == 0.0 ? 60.0 : timeout];
 	[request setValue:@"MWFeedParser" forHTTPHeaderField:@"User-Agent"];
 	
 	// Debug Log
@@ -619,6 +619,7 @@
 					else if ([currentPath isEqualToString:@"/rss/channel/item/guid"]) { if (processedText.length > 0) item.identifier = processedText; processed = YES; }
 					else if ([currentPath isEqualToString:@"/rss/channel/item/description"]) { if (processedText.length > 0) item.summary = processedText; processed = YES; }
 					else if ([currentPath isEqualToString:@"/rss/channel/item/content:encoded"]) { if (processedText.length > 0) item.content = processedText; processed = YES; }
+                      else if ([currentPath isEqualToString:@"/rss/channel/item/category"]) { if (processedText.length > 0) item.category = processedText; processed = YES; }
 					else if ([currentPath isEqualToString:@"/rss/channel/item/pubDate"]) { if (processedText.length > 0) item.date = [NSDate dateFromInternetDateTimeString:processedText formatHint:DateFormatHintRFC822]; processed = YES; }
 					else if ([currentPath isEqualToString:@"/rss/channel/item/enclosure"]) { [self createEnclosureFromAttributes:currentElementAttributes andAddToItem:item]; processed = YES; }
 					else if ([currentPath isEqualToString:@"/rss/channel/item/dc:date"]) { if (processedText.length > 0) item.date = [NSDate dateFromInternetDateTimeString:processedText formatHint:DateFormatHintRFC3339]; processed = YES; }
